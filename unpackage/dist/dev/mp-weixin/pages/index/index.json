@@ -1,6 +1,0 @@
-{
-  "navigationBarTitleText": "uni-app",
-  "usingComponents": {
-    "img-tailor": "/components/imgTailor/imgTailor"
-  }
-}
