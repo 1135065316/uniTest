@@ -1,0 +1,84 @@
+<template>
+	<video
+	id="custom_video"
+	ref="custom_video"
+	:src='videoUrl'
+	:controls='false'
+	autoplay
+	@tap="handleVideoTap"
+	@play="handlePlay"
+	@pause="handlePause"
+	>
+		
+	</video>
+</template>
+
+<script>
+	export default {
+		props: {
+			videoUrl: {
+				type: String,
+				required: true,
+			}, // 视频地址
+			autoFullScreen: {
+				type: Boolean,
+				default: true
+			}, // 是否自动全屏
+		},
+		data() {
+			return {
+				videoContext: null, // 视频上下文
+				touchStartTime: 0, // 双击视频播放还是暂停
+				isPlay: false, // 是否处于播放状态
+				showMenu: false, // 是否展示控件菜单
+			};
+		},
+		mounted() {
+			// 创建视频上下文
+			this.videoContext = uni.createVideoContext('custom_video', this)
+			if(this.autoFullScreen) {
+				// 使用nextTick避免requestFullScreen不触发
+				this.$nextTick(()=>{
+					// 设置全屏
+					this.videoContext.requestFullScreen()
+				})
+			}
+		},
+		methods: {
+			// 播放时触发
+			handlePlay() {
+				this.isPlay = true
+			},
+			// 暂停时触发
+			handlePause() {
+				this.isPlay = false
+			},
+			// 切换控件展示
+			toggleMenu() {
+				this.showMenu = !this.showMenu
+			},
+			// 点击视频触发
+			handleVideoTap() {
+				this.toggleMenu()
+				//实现双击事件播放与暂停
+				if (this.touchStartTime == 0) {
+					this.touchStartTime = new Date().getTime()
+				} else {
+					console.log(new Date().getTime(),this.touchStartTime);
+					if (new Date().getTime() - this.touchStartTime <= 300) {
+						if(!this.isPlay){
+							this.videoContext.play()
+						}else{
+							this.videoContext.pause()
+						}
+					}
+					this.touchStartTime = 0;
+				}
+			}
+		},
+	}
+</script>
+
+<style lang="scss">
+
+</style>

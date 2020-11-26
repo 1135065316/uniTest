@@ -5,7 +5,7 @@
 </template>
 
 <script>
-	import customVideoPlayer from '@/components/custom-video-player/custom-video-player.vue'
+	import customVideoPlayer from '@/components/custom-video-player/custom-video-player.nvue'
 	export default {
 		data() {
 			return {
@@ -14,7 +14,9 @@
 		},
 		components: {
 			customVideoPlayer
-		}
+		},
+		methods: {
+		},
 	}
 </script>
 
