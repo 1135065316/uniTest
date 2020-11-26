@@ -1,11 +1,15 @@
 <template>
 	<view>
-		<customVideoPlayer :videoUrl='videoUrl'></customVideoPlayer>
+		<!-- <customVideoPlayer :videoUrl='videoUrl'></customVideoPlayer> -->
+		<chunlei-video :title="title" :srcList="videoUrl" class="video" ref="video" color="#c93756" :gDuration="100">
+		
+		</chunlei-video>
 	</view>
 </template>
 
 <script>
 	import customVideoPlayer from '@/components/custom-video-player/custom-video-player.nvue'
+	import chunleiVideo from '../../components/chunlei-video/chunlei-video.nvue'
 	export default {
 		data() {
 			return {
@@ -13,7 +17,8 @@
 			}
 		},
 		components: {
-			customVideoPlayer
+			customVideoPlayer,
+			chunleiVideo
 		},
 		methods: {
 		},
