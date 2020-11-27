@@ -5,7 +5,7 @@
 			 @fullscreenchange="changeScreen" @timeupdate="timeupdate" @ended="ended" @waiting="waiting" @play="playing"
 			id="chunleiVideo" ref="chunleiVideo" class="video">
 			<!-- 非全屏 视频基本样式 -->
-			<cover-view  class="video-view" v-if="!fullScreen" :style="{ width: `750rpx`,height: `200px` }">
+			<cover-view  class="video-view" v-if="!fullScreen && !autoFullScreen" :style="{ width: `750rpx`,height: `200px` }">
 				<div class="move-view" @touchend="videoTouchEnd" @touchmove="videoTouchMove" @touchstart="videoTouchStart" :style="{ height: `200px`,width: `750rpx` }"></div>
 				<div class="stop" v-if="!play"><text class="ios-title">已暂停</text></div>
 				<image class="video-view" :style="{ width: `750rpx`,height: `200px` }" :src="poster" v-if="poster!=''&&playFirst"></image>
@@ -45,7 +45,7 @@
 				
 			</cover-view>
 			<!-- 非全屏	倍速播放 -->
-			<cover-view class="rate flex" @click.stop="" v-if="rateView&&!fullScreen">
+			<cover-view class="rate flex" @click.stop="" v-if="rateView&&!fullScreen && !autoFullScreen">
 				<div class="rate flex"  @click.stop="rateView=false" :style="{paddingTop: '40px'}">
 					<text class="ios-title">倍速播放</text>
 					<div class="rate-list flex">
@@ -80,7 +80,7 @@
 					<text :class="`${platform}-title`">{{title}}</text>
 				</div>
 				<!-- 右边:展开按钮,电源提示 -->
-				<div class="top-right" v-if="showTopRigth">
+				<div class="top-right" v-if="showTopRight">
 					<div class="btnBox" @click="danmuView=false" v-if="danmuView&&danmuList.length!=0"><text :class="`${platform}-icon`" :style="{color:color}">&#xe604;</text></div>
 					<div class="btnBox" @click="danmuView=true" v-if="!danmuView&&danmuList.length!=0"><text :class="`${platform}-icon`" style="color:#FFF">&#xe8de;</text></div>
 					<div class="btnBox marginRight" @click="clickMoreView"><text :class="`${platform}-icon`">&#xe646;</text></div>
@@ -257,7 +257,7 @@
 						<div class="btnBox" @click="playNext" v-if="!(episode==0||episode==index)"><text :class="`${platform}-icon`">&#xe8df;</text></div>
 					</div>
 					
-					<div class="fullControls-bottom-right">
+					<div class="fullControls-bottom-right" v-if="showBottomRight">
 						<div class="marginRight"  @click="clickRateView"><text :class="`${platform}-title`">{{rate}}x</text></div>
 						<div class="marginRight" v-if="srcTitle!=''"></div>
 						<div :class="`${platform}-title-box`" @click="clickSrcView" v-if="srcTitle!=''">
@@ -390,10 +390,14 @@
 				type:Boolean,
 				default:false
 			}, // 暂停提示
-			showTopRigth: {
+			showTopRight: {
 				type:Boolean,
 				default:false
-			}, // 右上控件
+			}, // 插件自带的右上控件
+			showBottomRight: {
+				type:Boolean,
+				default:false
+			}, // 插件自带的右下控件
 			
 		},
 		data(){
@@ -1234,7 +1238,7 @@
 		
 		height: 40px;
 		
-		transform: translateY(-40px);
+		// transform: translateY(-40px);
 		// top: 0;
 		top: 50rpx;
 		flex-direction: row;
