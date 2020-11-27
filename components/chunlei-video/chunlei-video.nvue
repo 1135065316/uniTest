@@ -237,8 +237,19 @@
 				<div class="fullControls-bottom" :style="{ width: `${fullControlsWidth}px` }">
 					<!-- 播放,暂停,下一集 按钮 -->
 					<div class="fullControls-bottom-left">
-						<div class="btnBox" @click="videoPlay" v-if="play"><text :class="`${platform}-icon`">&#xe601;</text></div>
-						<div class="btnBox" @click="videoPlay" v-if="!play"><text :class="`${platform}-icon`">&#xe896;</text></div>
+						<!-- 暂停 -->
+						<!-- <div class="btnBox" @click="videoPlay" v-if="play"><text :class="`${platform}-icon`">&#xe601;</text></div> -->
+						<!-- 播放 -->
+						<!-- <div class="btnBox" @click="videoPlay" v-if="!play"><text :class="`${platform}-icon`">&#xe896;</text></div> -->
+						
+						<!-- 暂停 -->
+						<div class="btnBox" @click="videoPlay" v-if="play">
+							<cover-image src="@/static/img/video/video_pause@3x.png" style="width: 48rpx;height: 48rpx;"></cover-image>
+						</div>
+						<!-- 播放 -->
+						<div class="btnBox" @click="videoPlay" v-if="!play">
+							
+						</div>
 						
 						<div class="btnBox" @click="playNext" v-if="!(episode==0||episode==index)"><text :class="`${platform}-icon`">&#xe8df;</text></div>
 					</div>
