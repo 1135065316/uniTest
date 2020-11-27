@@ -11,122 +11,16 @@
 				<!-- 触摸 -->
 				<div class="move-view" @touchend="videoTouchEnd" @touchmove="videoTouchMove" @touchstart="videoTouchStart" :style="{ width: `${fullControlsWidth}px`,height: `${fullControlsHeigt}px` }"></div>
 				
-				<!-- <div class="stop" v-if="!play"><text :class="`${platform}-title`">已暂停</text></div> -->
 			</cover-view>
 			
 			
 			<cover-view class="controls-top" ref="controlsTop" :style="{ width: `${fullControlsWidth}px` }" @click.stop="" v-if="fullScreen&&showControls&&!lock">
 				<div class="top-left">
-					<!-- <div class="btnBox"  @click="tapFullScreen"><text :class="`${platform}-icon`">&#xe60a;</text></div> -->
 					<cover-image src="../../static/img/video/common_nevbar_back_dark@3x.png" mode=""></cover-image>
 					<text :class="`${platform}-title`">{{title}}</text>
 				</div>
-				<!-- <div class="top-right">
-					<div class="btnBox" @click="danmuView=false" v-if="danmuView&&danmuList.length!=0"><text :class="`${platform}-icon`" :style="{color:color}">&#xe604;</text></div>
-					<div class="btnBox" @click="danmuView=true" v-if="!danmuView&&danmuList.length!=0"><text :class="`${platform}-icon`" style="color:#FFF">&#xe8de;</text></div>
-					<div class="btnBox marginRight" @click="clickMoreView"><text :class="`${platform}-icon`">&#xe646;</text></div>
-					<text :class="`${platform}-title`" :style="{marginRight:'0px'}">{{nowTime}}</text>
-					
-					<div class="power-view">
-						<div class="power-box">
-							<div class="power-header"></div>
-							<div class="power-body">
-								<div class="power-level" :style="{ width:`${16*level}px`,backgroundColor: '#fff' }"></div>
-							</div>
-						</div>
-						<text :class="`${platform}-sm-title`">{{nowTime}}</text>
-					</div>
-				</div> -->
 			</cover-view>
 			
-			<!-- <cover-view class="set-view" v-if="fullScreen&&(rateView||srcView||moreView||episodeView)" :style="{ width: `${fullControlsWidth}px`,height: `${fullControlsHeigt}px` }">
-				<div class="rate-set" :style="{ width: `${fullControlsWidth}px`,height: `${fullControlsHeigt}px` }" v-if="rateView"  @click.stop="clickRateView">
-					<text :class="`${platform}-big-title`" :style="{ marginBottom: '40px' }">播放速度</text>
-					<div class="set-bottom">
-						<div class="setBox" :class="0.5==rate?'solid-bottom':''" :style="{borderBottomColor:0.5==rate?color:'#fff'}" @click.stop="(args)=>tapRate(args,0.5)">
-							<text :class="`${platform}-big-title`" :style="{color:0.5==rate?color:'#fff'}">0.5x</text>
-						</div>
-						<div class="setBox" :class="0.8==rate?'solid-bottom':''" :style="{borderBottomColor:0.8==rate?color:'#fff'}" @click.stop="(args)=>tapRate(args,0.8)">
-							<text :class="`${platform}-big-title`" :style="{color:0.8==rate?color:'#fff'}">0.8x</text>
-						</div>
-						<div class="setBox" :class="1.0==rate?'solid-bottom':''" :style="{borderBottomColor:1.0==rate?color:'#fff'}" @click.stop="(args)=>tapRate(args,1)">
-							<text :class="`${platform}-big-title`" :style="{color:1.0==rate?color:'#fff'}">1.0x</text>
-						</div>
-						<div class="setBox" :class="1.25==rate?'solid-bottom':''" :style="{borderBottomColor:1.25==rate?color:'#fff'}" @click.stop="(args)=>tapRate(args,1.25)">
-							<text :class="`${platform}-big-title`" :style="{color:1.25==rate?color:'#fff'}">1.25x</text>
-						</div>
-						<div class="setBox" :class="1.5==rate?'solid-bottom':''" :style="{borderBottomColor:1.5==rate?color:'#fff'}" @click.stop="(args)=>tapRate(args,1.5)">
-							<text :class="`${platform}-big-title`" :style="{color:1.5==rate?color:'#fff'}">1.5x</text>
-						</div>
-					</div>
-				</div>
-				<div class="rate-set" :style="{ width: `${fullControlsWidth}px`,height: `${fullControlsHeigt}px` }" v-if="srcView"  @click.stop="clickSrcView">
-					<text :class="`${platform}-big-title`" :style="{ marginBottom: '40px' }">{{srcTitle}}</text>
-					<div class="set-bottom">
-						<div class="setBox" :class="srcTitle==item.title?'solid-bottom':''" :style="{borderBottomColor:srcTitle==item.title?color:'#fff'}" @click.stop="(args)=>tapSrc(args,item)" v-for="(item,index) in srcList" :key="index">
-							<text :class="`${platform}-big-title`" :style="{color:srcTitle==item.title?color:'#fff'}">{{item.title}}</text>
-						</div>
-					</div>
-				</div>
-				<div class="more-set" :style="{ width: `${fullControlsWidth}px`,height: `${fullControlsHeigt}px` }" v-if="moreView"  @click.stop="clickMoreView">
-					<div class="more-row">
-						<div class="more-box" @click.stop="clickLoop" v-if="!loop">
-							<text :class="`${platform}-big-icon`" style="color:#FFF">&#xe657;</text>
-							<text :class="`${platform}-title`" style="color:#FFF">循环播放</text>
-						</div>
-						<div class="more-box" @click.stop="clickLoop" v-if="loop">
-							<text :class="`${platform}-big-icon`" :style="{color:color}">&#xe63b;</text>
-							<text :class="`${platform}-title`" :style="{color:color}">取消循环</text>
-						</div>
-						<div class="more-box" @click.stop="clickFull" v-if="!full">
-							<text :class="`${platform}-big-icon`" style="color:#FFF">&#xe602;</text>
-							<text :class="`${platform}-title`" style="color:#FFF">撑满全屏</text>
-						</div>
-						<div class="more-box" @click.stop="clickFull" v-if="full">
-							<text :class="`${platform}-big-icon`" :style="{color:color}">&#xe78a;</text>
-							<text :class="`${platform}-title`" :style="{color:color}">恢复不撑满</text>
-						</div>
-						<div class="more-box" @click.stop="clickAudio" v-if="!audioFlag&&audio!=''">
-							<text :class="`${platform}-big-icon`" style="color:#FFF">&#xe606;</text>
-							<text :class="`${platform}-title`" style="color:#FFF">后台音频播放</text>
-						</div>
-						<div class="more-box" @click.stop="audioFlag=false" v-if="audioFlag&&audio!=''">
-							<text :class="`${platform}-big-icon`" :style="{color:color}">&#xe605;</text>
-							<text :class="`${platform}-title`" :style="{color:color}">后台音频播放</text>
-						</div>
-						<div class="more-box" @click.stop="clickDownload" v-if="!download&&downloadBtn">
-							<text :class="`${platform}-big-icon`" style="color:#FFF">&#xe6cf;</text>
-							<text :class="`${platform}-title`" style="color:#FFF">下载</text>
-						</div>
-						<div class="more-box" @click.stop="clickDownload" v-if="download&&downloadBtn">
-							<text :class="`${platform}-big-icon`" :style="{color:color}">&#xe6cf;</text>
-							<text :class="`${platform}-title`" :style="{color:color}">下载中</text>
-						</div>
-					</div>
-					<div class="more-tap"></div>
-					<div class="more-row">
-						<div class="more-box"><text :class="`${platform}-title`">播放速度</text></div>
-						<scroll-view class="scroll-view" scroll-x="true" :scroll-left="1.5==rate?200:0" :style="{ width: `${fullControlsWidth-320}px`}">
-							<div class="more-box" @click.stop="(args)=>tapRate(args,0.5)"><text class="`${platform}-title`" :class="0.5==rate?'solid-bottom':''" :style="{color:0.5==rate?color:'#fff',borderBottomColor:0.5==rate?color:'#fff'}">0.5x</text></div>
-							<div class="more-box" @click.stop="(args)=>tapRate(args,0.8)"><text class="`${platform}-title`" :class="0.8==rate?'solid-bottom':''" :style="{color:0.8==rate?color:'#fff',borderBottomColor:0.8==rate?color:'#fff'}">0.8x</text></div>
-							<div class="more-box" @click.stop="(args)=>tapRate(args,1)"><text class="`${platform}-title`" :class="1.0==rate?'solid-bottom':''" :style="{color:1.0==rate?color:'#fff',borderBottomColor:1.0==rate?color:'#fff'}">1.0x</text></div>
-							<div class="more-box" @click.stop="(args)=>tapRate(args,1.25)"><text class="`${platform}-title`" :class="1.25==rate?'solid-bottom':''" :style="{color:1.25==rate?color:'#fff',borderBottomColor:1.25==rate?color:'#fff'}">1.25x</text></div>
-							<div class="more-box" @click.stop="(args)=>tapRate(args,1.5)"><text class="`${platform}-title`" :class="1.5==rate?'solid-bottom':''" :style="{color:1.5==rate?color:'#fff',borderBottomColor:1.5==rate?color:'#fff'}">1.5x</text></div>
-						</scroll-view>
-					</div>
-				</div>
-				<div class="episode-set" :style="{ width: `${fullControlsWidth}px`,height: `${fullControlsHeigt}px` }"  v-if="episodeView"  @click.stop="clickEpisodeView">
-					<scroll-view scroll-x class="scroll-view" :style="{ width: `${fullControlsWidth-200}px`,height: `${fullControlsHeigt-40}px` }">
-						<div class="episode-scroll" :style="{height: `${fullControlsHeigt-40}px`,width: `${75*episode/4}px` }">
-							<div class="epiBox" v-for="count in episode" :key="count" @click="clickEpisode(count)" :class="count==index?'solid-bottom':''" :style="{borderBottomColor:count==index?color:'#fff'}">
-								<text :class="`${platform}-title`" :style="{color:count==index?color:'#fff'}">{{count}}</text>
-							</div>
-						</div>
-						
-					</scroll-view>
-				</div>
-				
-			</cover-view> -->
 			<!-- 滑动video时显示 -->
 			<cover-view class="fullCurrent-current" v-if="fullScreen&&touchType=='current'" :style="{ left: `${fullControlsWidth/2-75}px`}">
 				<div class="fullCurrent-top">
