@@ -228,8 +228,8 @@
 			
 			<cover-view class="fullControls-view"  ref="controlsBtm" :style="{ width: `${fullControlsWidth}px` }" @click.stop="" v-if="fullScreen&&showControls&&!lock">
 				<div class="fullControls-top" :style="{ width: `${fullControlsWidth}px` }">
-					<text :class="`${platform}-title`">{{currentDuration}}</text>
-					<text :class="`${platform}-title`">{{lastDuration}}</text>
+					<!-- <text :class="`${platform}-title`">{{currentDuration}}</text>
+					<text :class="`${platform}-title`">{{lastDuration}}</text> -->
 				</div>
 				<div class="fullControls-center">
 					<chunLei-slider :max="duration" :iosDirection="platform!='ios'?1:-direction/90" :value="current" :style="{width:`${fullControlsWidth-40}px`}" :screenLeft="40" :width="fullControlsWidth-40" @change="changeCurrent" :ratio="1" :direction="platform!='ios'?'screenX':'screenY'" :backgroundColor="color" :blockColor="color"></chunLei-slider>
@@ -238,19 +238,21 @@
 					<!-- 播放,暂停,下一集 按钮 -->
 					<div class="fullControls-bottom-left">
 						<!-- 暂停 -->
-						<!-- <div class="btnBox" @click="videoPlay" v-if="play"><text :class="`${platform}-icon`">&#xe601;</text></div> -->
-						<!-- 播放 -->
-						<!-- <div class="btnBox" @click="videoPlay" v-if="!play"><text :class="`${platform}-icon`">&#xe896;</text></div> -->
-						
-						<!-- 暂停 -->
 						<div class="btnBox" @click="videoPlay" v-if="play">
-							<cover-image src="@/static/img/video/video_pause@3x.png" style="width: 48rpx;height: 48rpx;"></cover-image>
+							<cover-image src="@/static/img/video/video_pause@3x.png" class="pauseBtn"></cover-image>
 						</div>
 						<!-- 播放 -->
 						<div class="btnBox" @click="videoPlay" v-if="!play">
-							
+							<cover-image src="@/static/img/video/video_play@3x.png" class="playBtn"></cover-image>
 						</div>
-						
+						<!-- 播放时间 -->
+						<div>
+							<text class="durationTxt">{{currentDuration}}</text>
+						</div>
+						<div>
+							<text class="durationTxt2">/{{lastDuration}}</text>
+						</div>
+						<!-- 下一集 -->
 						<div class="btnBox" @click="playNext" v-if="!(episode==0||episode==index)"><text :class="`${platform}-icon`">&#xe8df;</text></div>
 					</div>
 					
@@ -1044,11 +1046,19 @@
 		src: url('~@/static/chunlei-video/text-icon.ttf') format('truetype');
 	}
 	/* #endif*/
+	
+	.pauseBtn {
+		width: 48rpx;
+		height: 48rpx;
+	}
+	.playBtn {
+		width: 58rpx;
+		height: 58rpx;
+	}
 	.flex{
 		/* #ifndef APP-NVUE */
 		display: flex;
 		/* #endif */
-		
 	}
 	.video-box{
 		
@@ -1091,6 +1101,18 @@
 		/* #ifndef APP-PLUS-NVUE */
 		font-family: "texticons";
 		/* #endif*/
+	}
+	.durationTxt {
+		padding-top: 13px;
+		
+		font-size: 32rpx;
+		font-family: PingFangSC-Medium, PingFang SC;
+		font-weight: 500;
+		color: #FFFFFF;
+	}
+	.durationTxt2 {
+		@extend .durationTxt;
+		color: #b5b1b0;
 	}
 	.set-view{
 		position: absolute;
@@ -1480,7 +1502,8 @@
 		justify-content: space-between;
 		align-items: center;
 		height: 40px;
-		padding: 0 40px 0 30px;
+		// padding: 0 40px 0 30px;
+		padding: 0 40px 30rpx 30px;
 	}
 	.fullControls-bottom-right{
 		flex-direction: row;

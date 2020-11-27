@@ -1,11 +1,14 @@
 <template>
 	<div class="slider flex" id="slider" :style="{ width: `${width}px` }" ref="slider">
+		<!-- 进度条 左边部分 -->
 		<div class="slider-left flex" :style="{ width: `${leftWidth}px` }" @touchend.stop="sliderTouch">
 			<div class="left" :style="{backgroundColor:backgroundColor}"></div>
 		</div>
+		<!-- 进度条 右边部分 -->
 		<div class="slider-right flex" @touchend.stop="sliderTouch" :style="{ width: `${currentWidth-leftWidth}px` }">
 			<div class="right"></div>
 		</div>
+		
 		<div class="block flex" :style="{backgroundColor:touch?blockOuterColor:'rgba(0,0,0,0)', left: `${leftWidth}px`}"
 			@click.stop="">
 			<div class="block-inner flex" :style="{backgroundColor:blockBackgroundColor}"  @touchmove.stop.prevent="blockTouchMove" @touchend="blockTouchEnd" @touchstart="blockTouchStart">
