@@ -231,8 +231,9 @@
 					<!-- <text :class="`${platform}-title`">{{currentDuration}}</text>
 					<text :class="`${platform}-title`">{{lastDuration}}</text> -->
 				</div>
+				<!-- 进度条 -->
 				<div class="fullControls-center">
-					<chunLei-slider :max="duration" :iosDirection="platform!='ios'?1:-direction/90" :value="current" :style="{width:`${fullControlsWidth-40}px`}" :screenLeft="40" :width="fullControlsWidth-40" @change="changeCurrent" :ratio="1" :direction="platform!='ios'?'screenX':'screenY'" :backgroundColor="color" :blockColor="color"></chunLei-slider>
+					<chunLei-slider :max="duration" :iosDirection="platform!='ios'?1:-direction/90" :value="current" :style="{width:`${fullControlsWidth-40}px`}" :screenLeft="40" :width="fullControlsWidth-40" @change="changeCurrent" :ratio="1" :direction="platform!='ios'?'screenX':'screenY'" backgroundColor="#36ACFD" :blockColor="color"></chunLei-slider>
 				</div>
 				<div class="fullControls-bottom" :style="{ width: `${fullControlsWidth}px` }">
 					<!-- 播放,暂停,下一集 按钮 -->
@@ -267,10 +268,15 @@
 					</div>
 				</div>
 			</cover-view>
+			
+			<!-- 视频锁 -->
 			<cover-view :class="`${platform}-lock`" @click.stop="clickLock" v-if="fullScreen&&showControls" :style="{ top: `${fullControlsHeigt/2-30}px`}">
-				<text :class="`${platform}-icon`" v-if="!lock">&#xe8dd;</text>
-				<text :class="`${platform}-icon`" v-if="lock">&#xe61d;</text>
+				<!-- 解锁状态 -->
+				<image v-if="!lock" src="@/static/img/video/video_unlock.png" class="unlockImg"></image>
+				<!-- 锁定状态 -->
+				<image v-if="lock" src="@/static/img/video/video_lock.png" class="lockImg"></image>
 			</cover-view>
+			
 			<cover-view class="fullControls-remember" @click.stop="clickLock" v-if="fullScreen&&initialTime!=0&&remeber&&play">
 			
 				<div @click="remeber=!remeber" class="btnbox">
@@ -1052,8 +1058,8 @@
 		height: 48rpx;
 	}
 	.playBtn {
-		width: 58rpx;
-		height: 58rpx;
+		width: 48rpx;
+		height: 48rpx;
 	}
 	.flex{
 		/* #ifndef APP-NVUE */
@@ -1481,15 +1487,15 @@
 		z-index: 99999;
 		flex-direction: column;
 		align-items: center;
-		
 	}
 	.fullControls-top{
 		flex-direction: row;
 		justify-content: space-between;
-		height: 20px;
-		flex: 1;
+		// flex: 1;
+		height: 30px;
 		padding: 0 40px;
 		align-items: center;
+		position: relative;
 	}
 	.fullControls-center{
 		flex-direction: row;
@@ -1502,8 +1508,8 @@
 		justify-content: space-between;
 		align-items: center;
 		height: 40px;
-		// padding: 0 40px 0 30px;
-		padding: 0 40px 30rpx 30px;
+		padding: 0 40px 0 30px;
+		// padding: 0 40px 30rpx 30px;
 	}
 	.fullControls-bottom-right{
 		flex-direction: row;
@@ -1512,6 +1518,15 @@
 		z-index: 100;
 		flex: 1;
 	}
-
+	.lockImg {
+		width: 42rpx;
+		height: 42rpx;
+		
+	}
+	.unlockImg {
+		width: 42rpx;
+		height: 42rpx;
+		
+	}
 	
 </style>

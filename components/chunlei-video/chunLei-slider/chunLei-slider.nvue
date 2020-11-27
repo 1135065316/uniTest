@@ -9,14 +9,8 @@
 			<div class="right"></div>
 		</div>
 		
-		<div class="block flex" :style="{backgroundColor:touch?blockOuterColor:'rgba(0,0,0,0)', left: `${leftWidth}px`}"
-			@click.stop="">
-			<div class="block-inner flex" :style="{backgroundColor:blockBackgroundColor}"  @touchmove.stop.prevent="blockTouchMove" @touchend="blockTouchEnd" @touchstart="blockTouchStart">
-				<div class="block-inner-inner" :style="{backgroundColor:blockColor}">
-					
-				</div>
-			</div>
-		</div>
+		<!-- 进度块 -->
+		<cover-image class="sliderBlock" :style="{left: `${leftWidth}px`}" src="@/static/img/video/video_head@3x.png"  @touchmove.stop.prevent="blockTouchMove" @touchend="blockTouchEnd" @touchstart="blockTouchStart"></cover-image>
 	</div>
 </template>
 
@@ -165,30 +159,38 @@
 	}
 	.slider{
 		position: relative;
+		margin-top: 10px;
 		flex-direction: row;
-		height: 40px;
+		// height: 16rpx;
+		// height: 72rpx;
+		height: 144rpx;
+		
 		align-items: center;
 		
 		justify-content: center;
 	}
 	.slider-left{
-		height: 40px;
+		height: 16rpx;
 		flex-direction: row;
 		align-items: center;
 	}
 	.left{
 		flex: 1;
-		height: 3px;
+		// height: 3px;
+		height: 16rpx;
+		border-radius: 10rpx;
 	}
 	.slider-right{
-		height: 40px;
+		height: 16rpx;
 		flex-direction: row;
 		align-items: center;
 	}
 	.right{
-		height: 3px;
-		background-color: rgba(0,0,0,0.3);
+		// height: 3px;
+		height: 16rpx;
+		background-color: rgba(255,255,255,0.4);
 		flex: 1;
+		border-radius: 10rpx;
 	}
 	.block{
 		position: absolute;
@@ -211,5 +213,15 @@
 		width: 10px;
 		border-radius: 5px;
 		
+	}
+	.sliderBlock {
+		position: absolute;
+		width: 54rpx;
+		height: 72rpx;
+		top: 20rpx;
+		// top: 0;
+		// justify-content: center;
+		// align-items: center;
+		z-index: 999999;
 	}
 </style>
