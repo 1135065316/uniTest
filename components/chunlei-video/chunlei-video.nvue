@@ -1,7 +1,7 @@
 <template>
 	<view class="video-box">
 		<video :controls="false" :show-center-play-btn="false" :show-fullscreen-btn="false" :show-progress="false"
-			:objectFit="objectFit"  :src="src" :loop="loop" :enable-progress-gesture="false"
+			:objectFit="objectFit"  :src="src" :loop="loop" :enable-progress-gesture="false" :autoplay='autoplay'
 			 @fullscreenchange="changeScreen" @timeupdate="timeupdate" @ended="ended" @waiting="waiting" @play="playing"
 			id="chunleiVideo" ref="chunleiVideo" class="video">
 			<!-- 非全屏 视频基本样式 -->
@@ -67,17 +67,20 @@
 				</div>
 				<div class="move-view" @touchend="videoTouchEnd" @touchmove="videoTouchMove" @touchstart="videoTouchStart" :style="{ width: `${fullControlsWidth}px`,height: `${fullControlsHeigt}px` }"></div>
 				
-				<div class="stop" v-if="!play"><text :class="`${platform}-title`">已暂停</text></div>
+				<div class="stop" v-if="!play && showPauseTip"><text :class="`${platform}-title`">已暂停</text></div>
 			</cover-view>
 			
 			
-			
+			<!-- 顶部控件 -->
 			<cover-view class="controls-top" ref="controlsTop" :style="{ width: `${fullControlsWidth}px` }" @click.stop="" v-if="fullScreen&&showControls&&!lock">
+				<!-- 左边:回退按钮,标题 -->
 				<div class="top-left">
-					<div class="btnBox"  @click="tapFullScreen"><text :class="`${platform}-icon`">&#xe60a;</text></div>
+					<!-- 回退按钮 -->
+					<cover-image src="@/static/img/video/common_nevbar_back_dark@3x.png" class="backArrow"  @click="tapFullScreen"></cover-image>
 					<text :class="`${platform}-title`">{{title}}</text>
 				</div>
-				<div class="top-right">
+				<!-- 右边:展开按钮,电源提示 -->
+				<div class="top-right" v-if="showTopRigth">
 					<div class="btnBox" @click="danmuView=false" v-if="danmuView&&danmuList.length!=0"><text :class="`${platform}-icon`" :style="{color:color}">&#xe604;</text></div>
 					<div class="btnBox" @click="danmuView=true" v-if="!danmuView&&danmuList.length!=0"><text :class="`${platform}-icon`" style="color:#FFF">&#xe8de;</text></div>
 					<div class="btnBox marginRight" @click="clickMoreView"><text :class="`${platform}-icon`">&#xe646;</text></div>
@@ -95,6 +98,7 @@
 				</div>
 			</cover-view>
 			
+			<!-- 播放速度等设置区域 -->
 			<cover-view class="set-view" v-if="fullScreen&&(rateView||srcView||moreView||episodeView)" :style="{ width: `${fullControlsWidth}px`,height: `${fullControlsHeigt}px` }">
 				<div class="rate-set" :style="{ width: `${fullControlsWidth}px`,height: `${fullControlsHeigt}px` }" v-if="rateView"  @click.stop="clickRateView">
 					<text :class="`${platform}-big-title`" :style="{ marginBottom: '40px' }">播放速度</text>
@@ -183,6 +187,7 @@
 				</div>
 				
 			</cover-view>
+			
 			<!-- 滑动video时显示 -->
 			<cover-view class="fullCurrent-current" v-if="fullScreen&&touchType=='current'" :style="{ left: `${fullControlsWidth/2-75}px`}">
 				<div class="fullCurrent-top">
@@ -194,6 +199,7 @@
 				</div>
 				
 			</cover-view>
+			
 			<!-- 滑动video时显示音量 -->
 			<cover-view class="fullCurrent-view" v-if="fullScreen&&touchType=='volume'&&platform=='android'" :style="{ left: `${fullControlsWidth/2-75}px`}">
 				<div class="marginRight">
@@ -208,6 +214,7 @@
 					<div class="fullCurrent-progress" :style="{width: `${151-touchVolume*150}px`}"> </div>
 				</div>
 			</cover-view>
+			
 			<!-- 滑动video时显示亮度 -->
 			<cover-view class="fullCurrent-view" v-if="fullScreen&&touchType=='bright'&&platform=='android'" :style="{ left: `${fullControlsWidth/2-75}px`}">
 				<!-- <text :class="`${platform}-icon`">&#xe600;</text> -->
@@ -228,11 +235,14 @@
 					<chunLei-slider :max="duration" :iosDirection="platform!='ios'?1:-direction/90" :value="current" :style="{width:`${fullControlsWidth-40}px`}" :screenLeft="40" :width="fullControlsWidth-40" @change="changeCurrent" :ratio="1" :direction="platform!='ios'?'screenX':'screenY'" :backgroundColor="color" :blockColor="color"></chunLei-slider>
 				</div>
 				<div class="fullControls-bottom" :style="{ width: `${fullControlsWidth}px` }">
+					<!-- 播放,暂停,下一集 按钮 -->
 					<div class="fullControls-bottom-left">
 						<div class="btnBox" @click="videoPlay" v-if="play"><text :class="`${platform}-icon`">&#xe601;</text></div>
 						<div class="btnBox" @click="videoPlay" v-if="!play"><text :class="`${platform}-icon`">&#xe896;</text></div>
+						
 						<div class="btnBox" @click="playNext" v-if="!(episode==0||episode==index)"><text :class="`${platform}-icon`">&#xe8df;</text></div>
 					</div>
+					
 					<div class="fullControls-bottom-right">
 						<div class="marginRight"  @click="clickRateView"><text :class="`${platform}-title`">{{rate}}x</text></div>
 						<div class="marginRight" v-if="srcTitle!=''"></div>
@@ -352,7 +362,20 @@
 			isBack:{ //小屏返回
 				type:Boolean,
 				default:false
-			}
+			},
+			autoFullScreen: {
+				type:Boolean,
+				default:false
+			}, // 自动全屏
+			showPauseTip: {
+				type:Boolean,
+				default:false
+			}, // 暂停提示
+			showTopRigth: {
+				type:Boolean,
+				default:false
+			}, // 右上控件
+			
 		},
 		data(){
 			return{
@@ -422,6 +445,13 @@
 		async mounted() {
 			this.getLevel()
 			this.videoCtx = uni.createVideoContext(`chunleiVideo`,this)
+			if(this.autoFullScreen) {
+				// 使用nextTick避免requestFullScreen不触发
+				this.$nextTick(()=>{
+					// 设置全屏
+					this.videoCtx.requestFullScreen()
+				})
+			}
 		},
 		methods:{
 			back(){
@@ -1161,12 +1191,13 @@
 		/* #endif */
 		position: absolute;
 		
-		background-image: linear-gradient(to top , rgba(0,0,0,0) , rgba(0,0,0,0.8));
+		// background-image: linear-gradient(to top , rgba(0,0,0,0) , rgba(0,0,0,0.8));
 		
 		height: 40px;
 		
 		transform: translateY(-40px);
-		top: 0;
+		// top: 0;
+		top: 50rpx;
 		flex-direction: row;
 		justify-content: space-between;
 		align-items: center;
@@ -1178,6 +1209,10 @@
 		align-items: center;
 		font-size: 12px;
 		color: #fff;
+	}
+	.backArrow {
+		width: 48rpx;
+		height: 48rpx;
 	}
 	.top-right{
 		/* #ifndef APP-PLUS-NVUE */

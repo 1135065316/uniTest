@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<!-- <customVideoPlayer :videoUrl='videoUrl'></customVideoPlayer> -->
-		<chunlei-video :title="title" :srcList="videoUrl" class="video" ref="video" color="#c93756" :gDuration="100" :autoplay='true'>
+		<chunlei-video :title="title" :srcList="videoUrl" class="video" ref="video" color="#c93756" :autoplay='true' :autoFullScreen='true'>
 		
 		</chunlei-video>
 	</view>
